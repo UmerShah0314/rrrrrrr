@@ -1,0 +1,111 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-image: url(Jeeto.jpg);
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+    justify-content: center;
+    margin-top: 50px; /* reduced from 170px */
+    padding: 10px;
+}
+
+.card {
+    width: 100%; /* flexible width */
+    aspect-ratio: 5/6; /* maintain proportion */
+    background: #7e0707;
+    border-radius: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.card img {
+    width: 100%;
+    height: 100%;
+    display: none;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.opened img {
+    display: block;
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+</style>
+</head>
+<body>
+
+<div class="container" id="cards"></div>
+
+<script>
+const images = [
+  "Pizza.jfif",
+  "Pizza.jfif",
+  "Car.jpg",
+  "Cycle.webp",
+  "Bike.jpg",
+  "Bike.jpg",
+  "Egg.jfif",
+  "Egg.jfif",
+  "Car.jpg",
+  "Bike.jpg"
+];
+
+let opened = false;
+const container = document.getElementById("cards");
+
+// Check if page was already opened
+if (localStorage.getItem("opened")) {
+    document.body.innerHTML = "<h1 style='text-align:center;margin-top:100px;color:red;'>❌ You already opened this link</h1>";
+} else {
+    localStorage.setItem("opened", "true");
+
+    images.forEach(src => {
+        const card = document.createElement("div");
+        card.classList.add("card");
+
+        const img = document.createElement("img");
+        img.src = src;
+        card.appendChild(img);
+
+        card.onclick = () => {
+            if (!opened) {
+                opened = true;
+                card.classList.add("opened");
+
+                document.querySelectorAll(".card").forEach(c => {
+                    if (c !== card) c.classList.add("disabled");
+                });
+            }
+        };
+
+        container.appendChild(card);
+    });
+}
+</script>
+</body>
+</html>
